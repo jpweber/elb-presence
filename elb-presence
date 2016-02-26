@@ -16,12 +16,16 @@ parser.add_argument('--region', metavar='<REGION>', default=os.environ.get('AWS_
                     help='AWS region in which the ELB resides')
 parser.add_argument('--access-key', metavar='<ACCESS>', default=os.environ.get('AWS_ACCESS_KEY'))
 parser.add_argument('--secret-key', metavar='<SECRET>', default=os.environ.get('AWS_SECRET_KEY'))
+parser.add_argument('--proxy-host', metavar='<PROXY_HOST>', default=os.environ.get('PROXY_HOST'))
+parser.add_argument('--proxy-port', metavar='<PROXY_PORT>', default=os.environ.get('PROXY_PORT'))
 args = parser.parse_args()
 
 if args.access_key and args.secret_key:
     conn = boto.ec2.elb.connect_to_region(args.region,
                                           aws_access_key_id=args.access_key,
-                                          aws_secret_access_key=args.secret_key)
+                                          aws_secret_access_key=args.secret_key,
+                                          proxy=args.proxy_host,
+                                          proxy_port=args.proxy_port)
 else:
     conn = boto.ec2.elb.connect_to_region(args.region)
 
